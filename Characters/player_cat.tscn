@@ -1,7 +1,8 @@
-[gd_scene load_steps=28 format=3 uid="uid://blnqp04e78dmi"]
+[gd_scene load_steps=29 format=3 uid="uid://blnqp04e78dmi"]
 
 [ext_resource type="Texture2D" uid="uid://cn45uvrmyrd48" path="res://assets/Characters/Basic Charakter Spritesheet.png" id="1_pv545"]
 [ext_resource type="Script" path="res://Characters/player_cat.cs" id="1_sn0c1"]
+[ext_resource type="PackedScene" uid="uid://bpm3g25p88362" path="res://Weapons/sword.tscn" id="3_pg60l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wlngw"]
 size = Vector2(14, 6)
@@ -236,7 +237,6 @@ transitions = ["Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_
 
 [node name="PlayerCat" type="CharacterBody2D"]
 script = ExtResource("1_sn0c1")
-metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 5)
@@ -260,3 +260,6 @@ tree_root = SubResource("AnimationNodeStateMachine_tl1yn")
 anim_player = NodePath("../AnimationPlayer")
 parameters/Idle/blend_position = Vector2(0, -0.1)
 parameters/Walk/blend_position = Vector2(0, 0)
+
+[node name="Sword" parent="." instance=ExtResource("3_pg60l")]
+texture_filter = 2

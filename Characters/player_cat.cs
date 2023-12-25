@@ -14,10 +14,14 @@ public partial class player_cat : CharacterBody2D
     private AnimationTree animation_tree;
     private AnimationNodeStateMachinePlayback state_machine;
     
+    private Sword weapon;
+    
     public override void _Ready()
     {
         animation_tree = GetNode<AnimationTree>("AnimationTree");
         state_machine = animation_tree.Get("parameters/playback").As<AnimationNodeStateMachinePlayback>();
+        
+        weapon = GetNode<Sword>("Sword");
     }
     
     public override void _PhysicsProcess(double delta)
@@ -27,10 +31,13 @@ public partial class player_cat : CharacterBody2D
             Input.GetActionStrength("right")-Input.GetActionStrength("left"),
             Input.GetActionStrength("down")-Input.GetActionStrength("up")
         );
-        GD.Print(input_direction);
         
         UpdateAnimationParameters(input_direction);
         PickNewState();
+           
+        if (Input.IsActionJustPressed("attack")){
+            weapon.Attack();
+        }
         
         Velocity = input_direction*Speed;
         MoveAndSlide();
@@ -41,7 +48,15 @@ public partial class player_cat : CharacterBody2D
         if (move_input!=Vector2.Zero){
             animation_tree.Set("parameters/Idle/blend_position", move_input);
             animation_tree.Set("parameters/Walk/blend_position", move_input);
+            
+            //flip weapon direction
+            if (move_input[0]<0){
+                weapon.Scale = new Vector2(-1,1);
+            } else{
+                weapon.Scale = new Vector2(1,1);
+            }
         }
+        
     }
     private void PickNewState()
     {
@@ -50,6 +65,5 @@ public partial class player_cat : CharacterBody2D
         } else{
           state_machine.Travel("Idle");  
         }
-    }
-    
+    }    
 }
